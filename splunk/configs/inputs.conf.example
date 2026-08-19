@@ -1,0 +1,19 @@
+# Example Universal Forwarder inputs for the validated lab.
+# Place equivalent stanzas under:
+# C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf
+#
+# The MSI installer enabled Application, Security, and System in the original
+# build. Sysmon was added explicitly afterward.
+
+[WinEventLog://Application]
+disabled = 0
+
+[WinEventLog://Security]
+disabled = 0
+
+[WinEventLog://System]
+disabled = 0
+
+[WinEventLog://Microsoft-Windows-Sysmon/Operational]
+disabled = 0
+renderXml = true

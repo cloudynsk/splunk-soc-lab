@@ -1,0 +1,25 @@
+# Local credentials / secrets
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.p12
+*password*
+*credential*
+
+# Installer and runtime logs
+*.log
+*.msi
+*.deb
+
+# PowerShell / editor noise
+.vscode/
+.idea/
+*.tmp
+*.bak
+
+# Splunk runtime data should never be committed
+var/
+etc/passwd
+user-seed.conf

@@ -1,0 +1,19 @@
+index=main host=WIN11-LAB sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+| rex field=_raw "<EventID[^>]*>(?<EventID>\d+)</EventID>"
+| search EventID=1
+| rex field=_raw "<Data Name='User'>(?<User>[^<]*)</Data>"
+| rex field=_raw "<Data Name='Image'>(?<Image>[^<]+)</Data>"
+| rex field=_raw "<Data Name='CommandLine'>(?<CommandLine>[^<]*)</Data>"
+| rex field=_raw "<Data Name='ParentImage'>(?<ParentImage>[^<]*)</Data>"
+| search Image="*powershell.exe"
+| eval cmd=lower(CommandLine)
+| eval suspicious=if(
+    like(cmd,"%encodedcommand%")
+    OR like(cmd,"%-enc %")
+    OR like(cmd,"%downloadstring(%")
+    OR (like(cmd,"%invoke-webrequest%") AND like(cmd,"%http%")),
+    1,0
+)
+| where suspicious=1
+| table _time User ParentImage Image CommandLine
+| sort - _time

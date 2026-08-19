@@ -1,0 +1,10 @@
+index=main host=WIN11-LAB sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+| rex field=_raw "<EventID[^>]*>(?<EventID>\d+)</EventID>"
+| search EventID=3
+| rex field=_raw "<Data Name='User'>(?<User>[^<]*)</Data>"
+| rex field=_raw "<Data Name='Image'>(?<Image>[^<]+)</Data>"
+| rex field=_raw "<Data Name='DestinationIp'>(?<DestinationIp>[^<]+)</Data>"
+| rex field=_raw "<Data Name='DestinationPort'>(?<DestinationPort>[^<]+)</Data>"
+| rex field=_raw "<Data Name='Protocol'>(?<Protocol>[^<]+)</Data>"
+| table _time User Image DestinationIp DestinationPort Protocol
+| sort - _time
