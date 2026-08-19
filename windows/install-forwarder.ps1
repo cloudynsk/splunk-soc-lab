@@ -52,6 +52,10 @@ try {
         throw "Use printable ASCII characters for the lab password."
     }
 
+    if ($plainPassword.Contains('"')) {
+        throw 'Do not use a double quote (") in the lab password because it cannot be safely embedded in the MSI property argument.'
+    }
+
     $arguments = @(
         "/i", "`"$msi`"",
         "RECEIVING_INDEXER=`"$destination`"",
@@ -67,6 +71,7 @@ try {
     )
 
     Write-Host "Installing Universal Forwarder silently ..."
+    Write-Warning "The MSI receives the password as a process argument during installation. Use a lab-only password, not a reused personal credential."
     $process = Start-Process msiexec.exe -Wait -PassThru -ArgumentList $arguments
     if ($process.ExitCode -ne 0) {
         throw "MSI failed with exit code $($process.ExitCode). Inspect $log before retrying."
