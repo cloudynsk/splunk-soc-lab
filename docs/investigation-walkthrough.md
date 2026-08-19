@@ -129,7 +129,7 @@ This command **does not make a web request**. It only creates a process command 
 
 The validated rule returned exactly one event showing:
 
-- user: `WIN11-LAB\danru`
+- user: `WIN11-LAB\labuser` (sanitized example)
 - parent image: PowerShell
 - image: PowerShell
 - command line containing `Invoke-WebRequest http://example.invalid`
