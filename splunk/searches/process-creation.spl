@@ -1,0 +1,9 @@
+index=main host=WIN11-LAB sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+| rex field=_raw "<EventID[^>]*>(?<EventID>\d+)</EventID>"
+| search EventID=1
+| rex field=_raw "<Data Name='User'>(?<User>[^<]*)</Data>"
+| rex field=_raw "<Data Name='Image'>(?<Image>[^<]+)</Data>"
+| rex field=_raw "<Data Name='CommandLine'>(?<CommandLine>[^<]*)</Data>"
+| rex field=_raw "<Data Name='ParentImage'>(?<ParentImage>[^<]*)</Data>"
+| table _time User ParentImage Image CommandLine
+| sort - _time
